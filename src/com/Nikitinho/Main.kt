@@ -58,9 +58,15 @@ fun main(args: Array<String>) {
         println("--------------------------------")
         Thread.sleep(5000)
 
+        println("=======Finding new places=======")
+        println("--------------------------------")
+        findPlaces(beasts, trees)
+        println("--------------------------------")
+        Thread.sleep(5000)
+
         println("======Finding new friends=======")
         println("--------------------------------")
-        newFriens(beasts, trees)
+        newFriends(beasts)
         println("--------------------------------")
         Thread.sleep(5000)
 
@@ -239,8 +245,71 @@ fun neededFood(beast: Animals, trees: ArrayList<TreeStructure>): Int {
 }
 
 
-fun newFriens(beasts: ArrayList<Animals>, trees: ArrayList<TreeStructure>) {
-    findPlaces(beasts, trees)
+fun newFriends(beasts: ArrayList<Animals>) {
+    val squirrels = separateByGender(beasts, "Squirrel")
+    val newSquirrelsCount = newFriendsNumber(squirrels)
+    println("""Number of new squirrels born = $newSquirrelsCount""")
+    (1..newSquirrelsCount).forEach {
+        val beast = Squirrel()
+        println("""${beast.name} was added""")
+        println("""${beast.hp()} hp""")
+        beasts.add(beast)
+    }
+
+    val chipmunks = separateByGender(beasts, "Chipmunk")
+    val newChipmunksCount = newFriendsNumber(chipmunks)
+    println("""Number of new chipmunks born = $newChipmunksCount""")
+    (1..newChipmunksCount).forEach {
+        val beast = Chipmunk()
+        println("""${beast.name} was added""")
+        println("""${beast.hp()} hp""")
+        beasts.add(beast)
+    }
+
+    val badgers = separateByGender(beasts, "Badger")
+    val newBadgersCount = newFriendsNumber(badgers)
+    println("""Number of new badgers born = $newBadgersCount""")
+    (1..newBadgersCount).forEach {
+        val beast = Badger()
+        println("""${beast.name} was added""")
+        println("""${beast.hp()} hp""")
+        beasts.add(beast)
+    }
+
+    val flyingSquirrels = separateByGender(beasts, "Flying_Squirrel")
+    val newFlyingSquirrelsCount = newFriendsNumber(flyingSquirrels)
+    println("""Number of new flying squirrels born = $newFlyingSquirrelsCount""")
+    (1..newFlyingSquirrelsCount).forEach {
+        val beast = Flying_Squirrel()
+        println("""${beast.name} was added""")
+        println("""${beast.hp()} hp""")
+        beasts.add(beast)
+    }
+
+    val woodpeckers = separateByGender(beasts, "Woodpecker")
+    val newWoodpeckersCount = newFriendsNumber(woodpeckers)
+    println("""Number of new woodpeckers born = $newWoodpeckersCount""")
+    (1..newWoodpeckersCount).forEach {
+        val beast = Woodpecker()
+        println("""${beast.name} was added""")
+        println("""${beast.hp()} hp""")
+        beasts.add(beast)
+    }
+}
+
+fun separateByGender(beasts: ArrayList<Animals>, name: String) =
+        beasts.filter { it.name == name }.partition { it.gender == Animals.Gender.MALE }
+
+fun newFriendsNumber(beasts: Pair<List<Animals>, List<Animals>>): Int {
+    var number = 0
+
+    for (i in 0 until beasts.first.size)
+        for (j in 0 until beasts.second.size)
+            if (beasts.first[i].getTree() === beasts.second[j].getTree()
+                && beasts.first[i].getPlace() === beasts.second[j].getPlace())
+                number++
+
+    return number
 }
 
 fun findPlaces(beasts: ArrayList<Animals>, trees: ArrayList<TreeStructure>) {
@@ -267,6 +336,8 @@ interface Animals {
     fun hunger(food: Int)
     fun hp():Int
     fun place(tree: TreeStructure?, place: String?)
+    fun getTree(): TreeStructure?
+    fun getPlace(): String?
 
     enum class Gender {
         MALE,
@@ -299,6 +370,8 @@ data class Squirrel(private var food: Int = 100,
         this.place = place
     }
     override fun hp() = food
+    override fun getTree(): TreeStructure? = tree
+    override fun getPlace(): String? = place
 }
 
 /*Бурундучки едят орешки и шишки, но опавшие*/
@@ -319,6 +392,8 @@ data class Chipmunk(private var food: Int = 100,
         this.place = place
     }
     override fun hp() = food
+    override fun getTree(): TreeStructure? = tree
+    override fun getPlace(): String? = place
 }
 
 /*Барсуки едят корнеплоды, которые встречаются в некоторых корнях.*/
@@ -339,6 +414,8 @@ data class Badger(private var food: Int = 100,
         this.place = place
     }
     override fun hp() = food
+    override fun getTree(): TreeStructure? = tree
+    override fun getPlace(): String? = place
 }
 
 /*Летяги едят кленовые листья (есть в кронах кленов)*/
@@ -359,6 +436,8 @@ data class Flying_Squirrel(private var food: Int = 100,
         this.place = place
     }
     override fun hp() = food
+    override fun getTree(): TreeStructure? = tree
+    override fun getPlace(): String? = place
 }
 
 /*Дятлы едят червячков, которые живут в стволах.*/
@@ -379,6 +458,8 @@ data class Woodpecker(private var food: Int = 100,
         this.place = place
     }
     override fun hp() = food
+    override fun getTree(): TreeStructure? = tree
+    override fun getPlace(): String? = place
 }
 
 
@@ -483,7 +564,6 @@ interface TreeStructure {
         COMMON
     }
 }
-
 
 data class Spruce/*Ель с шишками*/(override val crown: TreeStructure.Crown = TreeStructure.Crown(),
                                    override val trunk: TreeStructure.Trunk = TreeStructure.Trunk(),
