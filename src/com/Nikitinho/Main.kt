@@ -58,6 +58,12 @@ fun main(args: Array<String>) {
         println("--------------------------------")
         Thread.sleep(5000)
 
+        println("======Finding new friends=======")
+        println("--------------------------------")
+        newFriens(beasts, trees)
+        println("--------------------------------")
+        Thread.sleep(5000)
+
         cycles++
     }
 }
@@ -162,6 +168,7 @@ fun treeCustomization (tree: TreeStructure) {
     println("""$addedTubers tubers were added to ${tree.name}""")
 }
 
+// Adding extra resources
 fun regeneration(trees: ArrayList<TreeStructure>) {
     val treesCount = trees.size
     (0 until treesCount).forEach {
@@ -173,10 +180,10 @@ fun regeneration(trees: ArrayList<TreeStructure>) {
 // Meal
 fun animalsMeal(beasts: ArrayList<Animals>, trees: ArrayList<TreeStructure>){
     beasts.forEach{ it ->
-        val amout_of_food = neededFood(it, trees)
-        val meal_regen = random.nextInt(MAX_FOOD_HP_REGEN+ 1) * amout_of_food
-        it.hunger(-meal_regen)
-        println("""${it.name} + $meal_regen hp = ${it.hp()}""")
+        val amountOfFood = neededFood(it, trees)
+        val mealRegen = random.nextInt(MAX_FOOD_HP_REGEN+ 1) * amountOfFood
+        it.hunger(-mealRegen)
+        println("""${it.name} + $mealRegen hp = ${it.hp()}""")
     }
 }
 
@@ -231,12 +238,35 @@ fun neededFood(beast: Animals, trees: ArrayList<TreeStructure>): Int {
     }
 }
 
+
+fun newFriens(beasts: ArrayList<Animals>, trees: ArrayList<TreeStructure>) {
+    findPlaces(beasts, trees)
+}
+
+fun findPlaces(beasts: ArrayList<Animals>, trees: ArrayList<TreeStructure>) {
+    beasts.forEach{
+        val tree = trees[random.nextInt(trees.size)]
+        val treePart = randomPart()
+        it.place(tree, treePart)
+        println("""${it.name} is on the ${tree.name} now! ($treePart)""")
+    }
+}
+
+fun randomPart(): String {
+    return when (random.nextInt(4)) {
+        0 -> "Crown"
+        1 -> "Trunk"
+        else -> "Roots"
+    }
+}
+
 interface Animals {
     val gender: Gender
     val name: String
 
     fun hunger(food: Int)
     fun hp():Int
+    fun place(tree: TreeStructure?, place: String?)
 
     enum class Gender {
         MALE,
@@ -253,50 +283,70 @@ fun randomGender(): Animals.Gender {
 
 /*Белочки питаются орешками и шишками*/
 data class Squirrel(private var food: Int = 100,
-                      override val gender: Animals.Gender = randomGender(),
-                      override val name: String = "Squirrel"): Animals {
+                    override val gender: Animals.Gender = randomGender(),
+                    private var tree: TreeStructure? = null,
+                    private var place: String? = null,
+                    override val name: String = "Squirrel"): Animals {
     override fun hunger(food: Int) {
         this.food -= food
         if (this.food < 0) {
             this.food = 0
             println("""${this.name} died""")
         }
+    }
+    override fun place(tree:TreeStructure?, place: String?) {
+        this.tree = tree
+        this.place = place
     }
     override fun hp() = food
 }
 
 /*Бурундучки едят орешки и шишки, но опавшие*/
 data class Chipmunk(private var food: Int = 100,
-                     override val gender: Animals.Gender = randomGender(),
-                     override val name: String = "Chipmunk"): Animals {
+                    override val gender: Animals.Gender = randomGender(),
+                    private var tree: TreeStructure? = null,
+                    private var place: String? = null,
+                    override val name: String = "Chipmunk"): Animals {
     override fun hunger(food: Int) {
         this.food -= food
         if (this.food < 0) {
             this.food = 0
             println("""${this.name} died""")
         }
+    }
+    override fun place(tree:TreeStructure?, place: String?) {
+        this.tree = tree
+        this.place = place
     }
     override fun hp() = food
 }
 
 /*Барсуки едят корнеплоды, которые встречаются в некоторых корнях.*/
 data class Badger(private var food: Int = 100,
-                   override val gender: Animals.Gender = randomGender(),
-                   override val name: String = "Badger"): Animals {
+                  override val gender: Animals.Gender = randomGender(),
+                  private var tree: TreeStructure? = null,
+                  private var place: String? = null,
+                  override val name: String = "Badger"): Animals {
     override fun hunger(food: Int) {
         this.food -= food
         if (this.food < 0) {
             this.food = 0
             println("""${this.name} died""")
         }
+    }
+    override fun place(tree:TreeStructure?, place: String?) {
+        this.tree = tree
+        this.place = place
     }
     override fun hp() = food
 }
 
 /*Летяги едят кленовые листья (есть в кронах кленов)*/
 data class Flying_Squirrel(private var food: Int = 100,
-                            override val gender: Animals.Gender = randomGender(),
-                            override val name: String = "Flying_Squirrel"): Animals {
+                           override val gender: Animals.Gender = randomGender(),
+                           private var tree: TreeStructure? = null,
+                           private var place: String? = null,
+                           override val name: String = "Flying_Squirrel"): Animals {
     override fun hunger(food: Int) {
         this.food -= food
         if (this.food < 0) {
@@ -304,19 +354,29 @@ data class Flying_Squirrel(private var food: Int = 100,
             println("""${this.name} died""")
         }
     }
+    override fun place(tree:TreeStructure?, place: String?) {
+        this.tree = tree
+        this.place = place
+    }
     override fun hp() = food
 }
 
 /*Дятлы едят червячков, которые живут в стволах.*/
 data class Woodpecker(private var food: Int = 100,
-                       override val gender: Animals.Gender = randomGender(),
-                       override val name: String = "Woodpecker"): Animals {
+                      override val gender: Animals.Gender = randomGender(),
+                      private var tree: TreeStructure? = null,
+                      private var place: String? = null,
+                      override val name: String = "Woodpecker"): Animals {
     override fun hunger(food: Int) {
         this.food -= food
         if (this.food < 0) {
             this.food = 0
             println("""${this.name} died""")
         }
+    }
+    override fun place(tree:TreeStructure?, place: String?) {
+        this.tree = tree
+        this.place = place
     }
     override fun hp() = food
 }
