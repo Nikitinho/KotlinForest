@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HWForest.iml" filepath="$PROJECT_DIR$/HWForest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/KotlinForest.iml" filepath="$PROJECT_DIR$/.idea/modules/KotlinForest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/KotlinForest_main.iml" filepath="$PROJECT_DIR$/.idea/modules/KotlinForest_main.iml" group="KotlinForest" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/KotlinForest_test.iml" filepath="$PROJECT_DIR$/.idea/modules/KotlinForest_test.iml" group="KotlinForest" />
     </modules>
   </component>
 </project>

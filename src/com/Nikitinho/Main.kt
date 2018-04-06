@@ -1,5 +1,3 @@
-package com.Nikitinho
-
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -187,7 +185,7 @@ fun regeneration(trees: ArrayList<TreeStructure>) {
 fun animalsMeal(beasts: ArrayList<Animals>, trees: ArrayList<TreeStructure>){
     beasts.forEach{ it ->
         val amountOfFood = neededFood(it, trees)
-        val mealRegen = random.nextInt(MAX_FOOD_HP_REGEN+ 1) * amountOfFood
+        val mealRegen = random.nextInt(MAX_FOOD_HP_REGEN + 1) * amountOfFood
         it.hunger(-mealRegen)
         println("""${it.name} + $mealRegen hp = ${it.hp()}""")
     }
@@ -365,7 +363,7 @@ data class Squirrel(private var food: Int = 100,
             println("""${this.name} died""")
         }
     }
-    override fun place(tree:TreeStructure?, place: String?) {
+    override fun place(tree: TreeStructure?, place: String?) {
         this.tree = tree
         this.place = place
     }
@@ -387,7 +385,7 @@ data class Chipmunk(private var food: Int = 100,
             println("""${this.name} died""")
         }
     }
-    override fun place(tree:TreeStructure?, place: String?) {
+    override fun place(tree: TreeStructure?, place: String?) {
         this.tree = tree
         this.place = place
     }
@@ -409,7 +407,7 @@ data class Badger(private var food: Int = 100,
             println("""${this.name} died""")
         }
     }
-    override fun place(tree:TreeStructure?, place: String?) {
+    override fun place(tree: TreeStructure?, place: String?) {
         this.tree = tree
         this.place = place
     }
@@ -431,7 +429,7 @@ data class Flying_Squirrel(private var food: Int = 100,
             println("""${this.name} died""")
         }
     }
-    override fun place(tree:TreeStructure?, place: String?) {
+    override fun place(tree: TreeStructure?, place: String?) {
         this.tree = tree
         this.place = place
     }
@@ -453,7 +451,7 @@ data class Woodpecker(private var food: Int = 100,
             println("""${this.name} died""")
         }
     }
-    override fun place(tree:TreeStructure?, place: String?) {
+    override fun place(tree: TreeStructure?, place: String?) {
         this.tree = tree
         this.place = place
     }
