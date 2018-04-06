@@ -73,5 +73,21 @@ class MyTest : FunSpec() {
         test("Check if tubers exist") {
             spruce.roots.tubersExist() shouldEqual (tubers > 0)
         }
+
+        val animals = arrayListOf<Animals>()
+        val maleNumber =  30
+        val femaleNumber = 10
+        for(i in 0 until maleNumber)
+            animals.add(Squirrel(100, Animals.Gender.MALE))
+        for(i in 0 until femaleNumber)
+            animals.add(Squirrel(100, Animals.Gender.FEMALE))
+
+        test("If separation is correct")
+        {
+            separateByGender(animals, "Squirrel").first.count() shouldBe maleNumber
+            separateByGender(animals, "Squirrel").second.count() shouldBe femaleNumber
+        }
+
+        // other methods depend on random functions and cannot be checked that way
     }
 }
