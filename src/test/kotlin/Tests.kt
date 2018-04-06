@@ -73,6 +73,5 @@ class MyTest : FunSpec() {
         test("Check if tubers exist") {
             spruce.roots.tubersExist() shouldEqual (tubers > 0)
         }
-
     }
 }
